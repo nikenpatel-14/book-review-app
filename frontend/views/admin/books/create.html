@@ -1,0 +1,45 @@
+<div class="container" ng-controller="AdminBookCreateController">
+    <div class="row mt-4">
+        <div class="col-md-8 offset-md-2">
+            <h2>Add New Book</h2>
+            <p class="text-muted">Create a new book for students to review.</p>
+
+            <div class="alert alert-danger" ng-if="error">
+                {{ error }}
+            </div>
+
+            <form ng-submit="createBook()" novalidate>
+                <div class="form-group">
+                    <label for="title">Title <span class="text-danger">*</span></label>
+                    <input type="text" id="title" class="form-control" ng-model="book.title" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="author">Author <span class="text-danger">*</span></label>
+                    <input type="text" id="author" class="form-control" ng-model="book.author" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description <span class="text-danger">*</span></label>
+                    <textarea id="description" class="form-control" ng-model="book.description" rows="4"
+                        required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="imageUrl">Cover Image URL <span class="text-danger">*</span></label>
+                    <input type="url" id="imageUrl" class="form-control" ng-model="book.imageUrl" required>
+                    <small class="form-text text-muted">Provide a URL to an image of the book cover.</small>
+                </div>
+
+                <div class="form-group d-flex justify-content-between mt-4">
+                    <a href="#!/admin/books" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary" ng-disabled="loading">
+                        <span ng-if="loading" class="spinner-border spinner-border-sm" role="status"
+                            aria-hidden="true"></span>
+                        Save Book
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

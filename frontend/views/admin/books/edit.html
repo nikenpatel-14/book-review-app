@@ -1,0 +1,59 @@
+<div class="container" ng-controller="AdminBookEditController">
+    <div class="row mt-4">
+        <div class="col-md-8 offset-md-2">
+            <h2>Edit Book</h2>
+            <p class="text-muted">Update the book information.</p>
+
+            <div class="alert alert-danger" ng-if="error">
+                {{ error }}
+            </div>
+
+            <div class="text-center my-5" ng-if="loading">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+
+            <form ng-submit="updateBook()" ng-if="!loading" novalidate>
+                <div class="form-group">
+                    <label for="title">Title <span class="text-danger">*</span></label>
+                    <input type="text" id="title" class="form-control" ng-model="book.title" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="author">Author <span class="text-danger">*</span></label>
+                    <input type="text" id="author" class="form-control" ng-model="book.author" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description <span class="text-danger">*</span></label>
+                    <textarea id="description" class="form-control" ng-model="book.description" rows="4"
+                        required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="imageUrl">Cover Image URL <span class="text-danger">*</span></label>
+                    <input type="url" id="imageUrl" class="form-control" ng-model="book.imageUrl" required>
+                    <small class="form-text text-muted">Provide a URL to an image of the book cover.</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Current Cover Image</label>
+                    <div class="mb-2">
+                        <img ng-src="{{ book.imageUrl }}" alt="{{ book.title }}" class="img-thumbnail"
+                            style="max-height: 200px;">
+                    </div>
+                </div>
+
+                <div class="form-group d-flex justify-content-between mt-4">
+                    <a href="#!/admin/books" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary" ng-disabled="loading">
+                        <span ng-if="loading" class="spinner-border spinner-border-sm" role="status"
+                            aria-hidden="true"></span>
+                        Update Book
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

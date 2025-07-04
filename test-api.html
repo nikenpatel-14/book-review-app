@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Test API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #2c3e50;
+        }
+
+        input,
+
+        button {
+            padding: 8px;
+            margin: 5px 0;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>API Test Tool</h1>
+
+    <h2>Register User</h2>
+    <div>
+        <label>Name: <input type="text" id="name" value="Test User"></label><br>
+        <label>Email: <input type="email" id="email" value="test@example.com"></label><br>
+        <label>Password: <input type="password" id="password" value="password123"></label><br>
+        <label>Role:
+            <select id="role">
+                <option value="student">Student</option>
+                <option value="teacher">Teacher</option>
+            </select>
+        </label><br>
+        <button onclick="register()">Register</button>
+    </div>
+
+    <h2>Login User</h2>
+    <div>
+        <label>Email: <input type="email" id="loginEmail" value="test@example.com"></label><br>
+        <label>Password: <input type="password" id="loginPassword" value="password123"></label><br>
+        <button onclick="login()">Login</button>
+    </div>
+
+    <h2>Result</h2>
+    <div id="result">Results will appear here...</div>
+
+    <script>
+        function showResult(data) {
+            document.getElementById('result').innerText =
+                typeof data === 'object' ? JSON.stringify(data, null, 2) : data;
+        }
+
+        async function register() {
+            try {
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const role = document.getElementById('role').value;
+
+                if (!name || !email || !password) {
+                    showResult('Please fill in all fields');
+                    return;
+                }
+
+                const response = await fetch('http://localhost:5000/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name,
+                        email,
+                        password,
+                        role
+                    })
+                });
+
+                const data = await response.json();
+                showResult(data);
+
+                if (data.success) {
+                    console.log('Registration successful', data);
+                } else {
+                    console.error('Registration failed', data);
+                }
+            } catch (error) {
+                showResult(`Error: ${error.message}`);
+                console.error('API error:', error);
+            }
+        }
+
+        async function login() {
+            try {
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+
+                if (!email || !password) {
+                    showResult('Please fill in all fields');
+                    return;
+                }
+
+                const response = await fetch('http://localhost:5000/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email,
+                        password
+                    })
+                });
+
+                const data = await response.json();
+                showResult(data);
+
+                if (data.success) {
+                    console.log('Login successful', data);
+                } else {
+                    console.error('Login failed', data);
+                }
+            } catch (error) {
+                showResult(`Error: ${error.message}`);
+                console.error('API error:', error);
+            }
+        }
+    </script>
+</body>
+
+</html>

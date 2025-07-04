@@ -1,0 +1,65 @@
+<div class="container" ng-controller="AdminBookListController">
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h2>Manage Books</h2>
+            <p class="text-muted">As a teacher, you can manage the books in the system.</p>
+
+            <a href="#!/admin/books/new" class="btn btn-primary mb-3">
+                <i class="fa fa-plus"></i> Add New Book
+            </a>
+
+            <div class="alert alert-success" ng-if="success">
+                {{ success }}
+            </div>
+
+            <div class="alert alert-danger" ng-if="error">
+                {{ error }}
+            </div>
+
+            <div class="text-center my-5" ng-if="loading">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+
+            <div class="table-responsive" ng-if="!loading">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Cover</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Author</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="book in books">
+                            <td>
+                                <img ng-src="{{ book.imageUrl }}" alt="{{ book.title }}" class="img-thumbnail"
+                                    style="height: 70px;">
+                            </td>
+                            <td>{{ book.title }}</td>
+                            <td>{{ book.author }}</td>
+                            <td>
+                                <a href="#!/books/{{ book._id }}" class="btn btn-sm btn-info" title="View">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                <a href="#!/admin/books/edit/{{ book._id }}" class="btn btn-sm btn-warning"
+                                    title="Edit">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <button class="btn btn-sm btn-danger" title="Delete"
+                                    ng-click="deleteBook(book._id, $index)">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr ng-if="books.length === 0">
+                            <td colspan="4" class="text-center">No books found. Click "Add New Book" to create one.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

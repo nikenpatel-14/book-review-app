@@ -1,0 +1,114 @@
+<div class="row">
+    <div class="col-12 mb-4">
+        <h1>My Reviews</h1>
+        <hr>
+    </div>
+</div>
+
+<div class="row" ng-if="error">
+    <div class="col-12">
+        <div class="alert alert-danger">
+            {{ error }}
+        </div>
+    </div>
+</div>
+
+<div class="row" ng-if="success">
+    <div class="col-12">
+        <div class="alert alert-success">
+            {{ success }}
+        </div>
+    </div>
+</div>
+
+<div class="row" ng-if="loading">
+    <div class="col-12 text-center">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</div>
+
+<div class="row" ng-if="!loading && reviews.length === 0">
+    <div class="col-12">
+        <div class="alert alert-info">
+            <p class="mb-0">You haven't written any reviews yet. <a href="#!/books">Browse books</a> to start reviewing!
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="row" ng-if="!loading && reviews.length > 0">
+    <div class="col-12">
+        <div class="card review-card mb-3" ng-repeat="review in reviews">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h5 class="card-title">{{ review.book.title }}</h5>
+                        <h6 class="card-subtitle text-muted mb-2">by {{ review.book.author }}</h6>
+
+                        <div class="mb-2">
+                            <div class="star-rating">
+                                <i class="fas fa-star" ng-repeat="star in getStarRating(review.rating)"></i>
+                                <i class="far fa-star" ng-repeat="star in getEmptyStars(review.rating)"></i>
+                            </div>
+                            <small class="text-muted ms-2">
+                                Reviewed on {{ review.createdAt | date:'mediumDate' }}
+                            </small>
+                        </div>
+
+                        <p class="card-text">{{ review.comment }}</p>
+                    </div>
+                    <div>
+                        <button class="btn btn-outline-primary btn-sm me-2" ng-click="editReview(review)">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm" ng-click="deleteReview(review._id, $index)">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Review Modal -->
+<div class="modal fade" id="editReviewModal" tabindex="-1" aria-hidden="true" ng-class="{'show d-block': isEditing}">
+    <div class="modal-dialog">
+        <div class="modal-content" ng-if="isEditing">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Review</h5>
+                <button type="button" class="btn-close" ng-click="cancelEdit()"></button>
+            </div>
+            <div class="modal-body">
+                <form ng-submit="saveReview()">
+                    <div class="mb-3">
+                        <label class="form-label">Rating</label>
+                        <div>
+                            <div class="form-check form-check-inline" ng-repeat="i in [1, 2, 3, 4, 5]">
+                                <input class="form-check-input" type="radio" name="rating" id="editRating{{i}}"
+                                    ng-model="editingReview.rating" ng-value="i">
+                                <label class="form-check-label" for="editRating{{i}}">{{i}}</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editComment" class="form-label">Comment</label>
+                        <textarea class="form-control" id="editComment" rows="4" ng-model="editingReview.comment"
+                            required></textarea>
+                    </div>
+
+                    <div class="text-end">
+                        <button type="button" class="btn btn-secondary me-2" ng-click="cancelEdit()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Backdrop -->
+<div class="modal-backdrop fade show" ng-if="isEditing"></div>

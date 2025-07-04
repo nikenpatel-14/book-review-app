@@ -1,0 +1,51 @@
+/* General Styles */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1;
+}
+
+/* Card Styles */
+.book-card {
+    transition: transform 0.3s;
+    height: 100%;
+}
+
+.book-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.book-img {
+    height: 250px;
+    object-fit: cover;
+}
+
+/* Rating Styles */
+.star-rating {
+    color: #ffc107;
+}
+
+.star-rating .far {
+    color: #e4e5e9;
+}
+
+/* Form Styles */
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Review Styles */
+.review-card {
+    border-left: 4px solid #007bff;
+}
+
+/* Admin Panel */
+.admin-actions {
+    white-space: nowrap;
+}
